@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 client = Groq(
-    api_key=os.getenv("GROQ_API_KEY")
+    api_key="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"
 )
 
 def call_groq(prompt, system_message):

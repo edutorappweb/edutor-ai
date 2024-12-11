@@ -9,7 +9,7 @@ import json
 
 load_dotenv()
 
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+genai.configure(api_key="AIzaSyAmKMnTLNM_KMxFbupYWm2fs-pNvHcmEhM")
 
 class AIServiceError(Exception):
     """Custom exception for AI service errors"""

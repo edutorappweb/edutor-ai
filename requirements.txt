@@ -7,3 +7,4 @@ requests==2.32.3
 groq==0.13.0
 google-cloud-texttospeech==2.21.0
 gunicorn==23.0.0
+python-multipart==0.0.19

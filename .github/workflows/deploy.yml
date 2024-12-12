@@ -1,0 +1,48 @@
+name: Deploy to Google Cloud
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCLOUD_SERVICE_KEY }}
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: mytutor-new
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.GCLOUD_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H 34.93.8.104 >> ~/.ssh/known_hosts
+
+      - name: Copy .env.production to Server
+        run: |
+          scp -i ~/.ssh/id_ed25519 .env.production edutorapp.dev@34.93.8.104:~/NewEdutorAPI/.env.production
+
+      - name: Deploy FastAPI Application to Google Compute Engine
+        run: |
+          ssh -i ~/.ssh/id_ed25519 edutorapp.dev@34.93.8.104 << 'EOF'
+          sudo su
+          cd ~/NewEdutorAPI
+          git fetch --all
+          git reset --hard origin/main
+          git pull origin main
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+          cp -u .env.production .env
+          uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+          EOF

@@ -41,7 +41,7 @@ class GetPodcastRequest(BaseModel):
 
 @app.get("/")
 async def home():
-    return "Hello, From EdutorAI! 😊"
+    return "Hello, From Jaydipsinh Solanki! 😊"
 
 @app.post("/search-category")
 async def search_category(request: SearchRequest):

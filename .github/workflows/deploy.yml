@@ -24,25 +24,20 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh/
-          echo "${{ secrets.GCLOUD_SSH_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H 34.93.8.104 >> ~/.ssh/known_hosts
-
-      - name: Copy .env.production to Server
-        run: |
-          scp -i ~/.ssh/id_ed25519 .env.production edutorapp.dev@34.93.8.104:~/NewEdutorAPI/.env.production
+          echo "${{ secrets.GCLOUD_SSH_KEY }}" > ~/.ssh/gcloud_ssh_key
+          chmod 600 ~/.ssh/gcloud_ssh_key
+          ssh-keyscan -H 34.100.233.69 >> ~/.ssh/known_hosts
 
       - name: Deploy FastAPI Application to Google Compute Engine
         run: |
-          ssh -i ~/.ssh/id_ed25519 edutorapp.dev@34.93.8.104 << 'EOF'
+          ssh -i ~/.ssh/gcloud_ssh_key edutorapp.dev@34.100.233.69 << 'EOF'
           sudo su
-          cd ~/NewEdutorAPI
+          cd ~/edutor-ai
           git fetch --all
           git reset --hard origin/main
           git pull origin main
           python3 -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
-          cp -u .env.production .env
           uvicorn main:app --host 0.0.0.0 --port 8001 --reload
           EOF

@@ -28,17 +28,15 @@ jobs:
           chmod 600 ~/.ssh/gcloud_ssh_key
           ssh-keyscan -H 34.100.233.69 >> ~/.ssh/known_hosts
 
-      - name: Deploy FastAPI Application to Google Compute Engine
+      - name: Debug Instance
         run: |
           ssh -i ~/.ssh/gcloud_ssh_key main.jaydipsinh@34.100.233.69 << 'EOF'
-          sudo su
-          cd ~/edutor-ai
-          git fetch --all
-          git reset --hard origin/main
-          git pull origin main
-          python3 -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt
-          cp -u .env.production .env
-          uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+          echo "Current Directory:"
+          pwd
+          echo "Contents of Root Directory:"
+          ls -la /root/
+          echo "Contents of Home Directory:"
+          ls -la /home/main.jaydipsinh/
+          echo "Searching for edutor-ai folder:"
+          find / -type d -name "edutor-ai" 2>/dev/null
           EOF

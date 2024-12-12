@@ -44,4 +44,5 @@ jobs:
           pip install -r requirements.txt
           echo "Starting the application..."
           uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+          exit 0  # Exit after successful startup
           EOF

@@ -31,8 +31,6 @@ jobs:
       - name: Deploy FastAPI Application
         run: |
           ssh -i ~/.ssh/gcloud_ssh_key main.jaydipsinh@34.100.233.69 << 'EOF'
-          sudo su
-          git config --global --add safe.directory /home/edutorapp_dev/edutor-ai
           cd /home/edutorapp_dev/edutor-ai
           echo "Pulling latest changes from the repository..."
           git fetch --all
@@ -44,5 +42,5 @@ jobs:
           pip install -r requirements.txt
           echo "Starting the application..."
           uvicorn main:app --host 0.0.0.0 --port 8001 --reload
-          exit 0  # Exit after successful startup
+          exit 0
           EOF

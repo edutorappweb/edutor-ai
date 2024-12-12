@@ -30,8 +30,6 @@ jobs:
 
       - name: Deploy FastAPI Application to Google Compute Engine
         run: |
-          ssh -i ~/.ssh/gcloud_ssh_key edutorapp.dev@34.100.233.69 << 'EOF'
-          sudo su
           cd ~/edutor-ai
           git fetch --all
           git reset --hard origin/main

@@ -30,6 +30,8 @@ jobs:
 
       - name: Deploy FastAPI Application to Google Compute Engine
         run: |
+          ssh -i ~/.ssh/gcloud_ssh_key main.jaydipsinh@34.100.233.69 << 'EOF'
+          sudo su
           cd ~/edutor-ai
           git fetch --all
           git reset --hard origin/main
@@ -37,5 +39,6 @@ jobs:
           python3 -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
+          cp -u .env.production .env
           uvicorn main:app --host 0.0.0.0 --port 8001 --reload
           EOF
